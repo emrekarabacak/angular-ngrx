@@ -4,6 +4,13 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { AuthService } from './auth.service';
 
+import { Store, select } from '@ngrx/store';
+import { State } from '../state/app.state';
+
+import * as fromRoot from '../state/app.state';
+import * as fromUser from './state/user.reducer';
+import * as userActions from './state/user.actions';
+
 @Component({
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
@@ -14,12 +21,17 @@ export class LoginComponent implements OnInit {
 
   maskUserName: boolean;
 
-  constructor(private authService: AuthService,
-              private router: Router) {
+  constructor(private store: Store<fromRoot.State>,
+    private authService: AuthService,
+    private router: Router) {
   }
 
   ngOnInit(): void {
-
+    this.store.pipe(select(fromUser.getMaskUserName)).subscribe(
+      maskUsername => {
+        console.log("Data came : " + this.maskUserName)
+        this.maskUserName = maskUsername;
+      });
   }
 
   cancel(): void {
@@ -27,7 +39,7 @@ export class LoginComponent implements OnInit {
   }
 
   checkChanged(value: boolean): void {
-    this.maskUserName = value;
+    this.store.dispatch(new userActions.MaskUserName(value));
   }
 
   login(loginForm: NgForm): void {
