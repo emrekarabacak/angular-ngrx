@@ -33,6 +33,7 @@ export function reducer(state = initialState, action: UserActions): UserState {
                 ...state,
                 maskUserName: action.payload
             };
+
         default:
             return state;
     }
