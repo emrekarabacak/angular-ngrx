@@ -9,14 +9,12 @@ export interface State extends fromRoot.State {
 
 export interface ProductState {
     showProductCode: boolean;
-    currentProductId: number;
     currentProduct: Product;
     products: Product[];
 }
 
 const initialState: ProductState = {
     showProductCode: true,
-    currentProductId: 5,
     currentProduct: null,
     products: []
 }
@@ -28,16 +26,9 @@ export const getShowProductCode = createSelector(
     state => state.showProductCode
 )
 
-export const getCurrentProductId = createSelector(
-    getProductFeatureState,
-    state => state.currentProductId
-)
-
 export const getCurrentProduct = createSelector(
     getProductFeatureState,
-    getCurrentProductId,
-    (state, currentProductId) =>
-        state.products.find(p => p.id == currentProductId)
+    state => state.currentProduct
 )
 
 export const getProducts = createSelector(

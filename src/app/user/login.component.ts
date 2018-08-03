@@ -21,16 +21,14 @@ export class LoginComponent implements OnInit {
   maskUserName: boolean;
 
   constructor(private store: Store<fromRoot.State>,
-              private authService: AuthService,
-              private router: Router) {
+    private authService: AuthService,
+    private router: Router) {
   }
 
   ngOnInit(): void {
     this.store.pipe(select(fromUser.getMaskUserName)).subscribe(
-      maskUserName => {
-        console.log("Data came : " + this.maskUserName)
-        this.maskUserName = maskUserName;
-      });
+      maskUserName => this.maskUserName = maskUserName
+    );
   }
 
   cancel(): void {

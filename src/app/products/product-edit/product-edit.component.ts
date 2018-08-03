@@ -6,10 +6,9 @@ import { ProductService } from '../product.service';
 import { GenericValidator } from '../../shared/generic-validator';
 import { NumberValidators } from '../../shared/number.validator';
 
-import { Store, select} from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import * as fromProduct from '../state/product.reducer';
 import * as productActions from '../state/product.actions';
-import { currentId } from 'async_hooks';
 
 @Component({
   selector: 'pm-product-edit',
@@ -29,8 +28,8 @@ export class ProductEditComponent implements OnInit, OnDestroy {
   private genericValidator: GenericValidator;
 
   constructor(private store: Store<fromProduct.State>,
-              private fb: FormBuilder,
-              private productService: ProductService) {
+    private fb: FormBuilder,
+    private productService: ProductService) {
 
     // Defines all of the validation messages for the form.
     // These could instead be retrieved from a file or database.
@@ -57,8 +56,8 @@ export class ProductEditComponent implements OnInit, OnDestroy {
     // Define the form group
     this.productForm = this.fb.group({
       productName: ['', [Validators.required,
-                         Validators.minLength(3),
-                         Validators.maxLength(50)]],
+      Validators.minLength(3),
+      Validators.maxLength(50)]],
       productCode: ['', Validators.required],
       starRating: ['', NumberValidators.range(1, 5)],
       description: ''
@@ -66,7 +65,6 @@ export class ProductEditComponent implements OnInit, OnDestroy {
 
     // TODO unsubscribe
     this.store.pipe(select(fromProduct.getCurrentProduct)).subscribe(
-      
       currentProduct => this.displayProduct(currentProduct)
     );
 
