@@ -18,9 +18,9 @@ import { Observable } from '../../../../node_modules/rxjs';
 export class ProductListComponent implements OnInit, OnDestroy {
   pageTitle = 'Products';
   displayCode: boolean;
+  componentActive = true;
 
   selectedProduct: Product | null;
-  componentActive = true;
   products$: Observable<Product[]>;
   errorMessage$: Observable<String>;
 
@@ -29,20 +29,23 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    //todo unsubscribe
-    this.store.pipe(select(fromProduct.getCurrentProduct),
-      takeWhile(() => this.componentActive)).subscribe(
-        currentProduct => this.selectedProduct = currentProduct
-      );
-
-
-    this.errorMessage$ = this.store.pipe(select(fromProduct.getError));
-    this.store.dispatch(new productActions.Load());
     this.products$ = this.store.pipe(select(fromProduct.getProducts));
-    this.store.pipe(select(fromProduct.getShowProductCode)).subscribe(
-      showProductCode => {
-        this.displayCode = showProductCode;
-      });
+    this.errorMessage$ = this.store.pipe(select(fromProduct.getError));
+
+    this.store.dispatch(new productActions.Load());
+
+    this.store.pipe(select(fromProduct.getCurrentProduct),
+      takeWhile(() => this.componentActive)
+    ).subscribe(
+      currentProduct => this.selectedProduct = currentProduct
+    );
+
+
+    this.store.pipe(select(fromProduct.getShowProductCode),
+      takeWhile(() => this.componentActive)
+    ).subscribe(
+      showProductCode => this.displayCode = showProductCode
+    );
   }
 
   ngOnDestroy(): void {
