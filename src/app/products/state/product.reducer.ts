@@ -11,12 +11,14 @@ export interface ProductState {
     showProductCode: boolean;
     currentProduct: Product;
     products: Product[];
+    error: String;
 }
 
 const initialState: ProductState = {
     showProductCode: true,
     currentProduct: null,
-    products: []
+    products: [],
+    error: ''
 }
 
 const getProductFeatureState = createFeatureSelector<ProductState>('products');
@@ -36,6 +38,11 @@ export const getProducts = createSelector(
     state => state.products
 )
 
+export const getError = createSelector(
+    getProductFeatureState,
+    state => state.error
+)
+
 export function reducer(state = initialState, action: ProductActions): ProductState {
     switch (action.type) {
         case ProductActionTypes.ToggleProductCode:
@@ -43,16 +50,19 @@ export function reducer(state = initialState, action: ProductActions): ProductSt
                 ...state,
                 showProductCode: action.payload,
             };
+
         case ProductActionTypes.SetCurrentProduct:
             return {
                 ...state,
                 currentProduct: { ...action.payload }
             };
+
         case ProductActionTypes.ClearCurrentProduct:
             return {
                 ...state,
                 currentProduct: null
             };
+
         case ProductActionTypes.InitializeCurrentProduct:
             return {
                 ...state,
@@ -64,6 +74,21 @@ export function reducer(state = initialState, action: ProductActions): ProductSt
                     starRating: 0
                 }
             }
+
+        case ProductActionTypes.LoadSuccess:
+            return {
+                ...state,
+                products: action.payload,
+                error: ''
+            }
+
+        case ProductActionTypes.LoadFail:
+            return {
+                ...state,
+                products: [],
+                error: action.payload
+            }
+            
         default:
             return state;
     }
