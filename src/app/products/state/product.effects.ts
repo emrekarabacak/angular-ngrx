@@ -22,4 +22,16 @@ export class ProductEffects {
             catchError(error => of(new productActions.LoadFail(error)))
         ))
     )
+
+    @Effect()
+    updateProduct$ = this.actions$.pipe(
+        ofType(productActions.ProductActionTypes.UpdateProduct),
+        map((action: productActions.UpdateProduct) => action.payload),
+        mergeMap((product: Product) =>
+            this.productService.updateProduct(product).pipe(
+                map(updatedProduct => (new productActions.UpdateProductSuccess(updatedProduct))),
+                catchError(err => of(new productActions.UpdateProductFail(err)))
+            )
+        )
+    );
 }
