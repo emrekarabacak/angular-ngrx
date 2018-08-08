@@ -7,7 +7,7 @@ import { AuthService } from './auth.service';
 import { Store, select } from '@ngrx/store';
 
 import * as fromRoot from '../state/app.state';
-import * as fromUser from './state/user.reducer';
+import * as fromUser from './state';
 import * as userActions from './state/user.actions';
 import { takeWhile } from '../../../node_modules/rxjs/operators';
 

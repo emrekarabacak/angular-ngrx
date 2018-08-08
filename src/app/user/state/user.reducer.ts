@@ -13,18 +13,6 @@ const initialState: UserState = {
     currentUser: null
 }
 
-const getUserFeatureState = createFeatureSelector<UserState>('users');
-
-export const getMaskUserName = createSelector(
-    getUserFeatureState,
-    state => state.maskUserName
-)
-
-export const getCurrentUSer = createSelector(
-    getUserFeatureState,
-    state => state.currentUser
-)
-
 
 export function reducer(state = initialState, action: UserActions): UserState {
     switch (action.type) {
