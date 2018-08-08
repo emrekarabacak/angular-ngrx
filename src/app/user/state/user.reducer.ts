@@ -1,7 +1,6 @@
 import { User } from "../user";
-
-import { createFeatureSelector, createSelector } from "@ngrx/store";
 import { UserActions, UserActionTypes } from "./user.actions";
+
 
 export interface UserState {
     maskUserName: boolean;
